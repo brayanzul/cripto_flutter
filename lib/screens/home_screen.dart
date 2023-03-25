@@ -4,6 +4,7 @@ import 'package:cripto_flutter/screens/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../widgets/button_widget.dart';
 import '../widgets/total_balance.dart';
 
 class HomeScreen extends StatefulWidget {   
@@ -52,27 +53,27 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      backgroundColor: Colors.black,
-      body: const SafeArea(
+      backgroundColor: Colors.white,
+      body: SafeArea(
         child: CustomScrollView(
         slivers: <Widget>[
-          SliverToBoxAdapter(
+          const SliverToBoxAdapter(
             child: TotalBalance(),
           ),
-          // SliverToBoxAdapter(
-          //   child: SizedBox(
-          //     height: 75,
-          //     width: MediaQuery.of(context).size.width,
-          //     child: Row(
-          //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          //       children: [
-          //         ButtonWidget(text: 'Deposit', onTap: () {}, active: true),
-          //         ButtonWidget(text: 'Wallet', onTap: () {}, active: true),
-          //         ButtonWidget(text: 'Withdraw', onTap: () {}, active: true),
-          //       ],
-          //     ),
-          //   ),
-          // ),
+          SliverToBoxAdapter(
+            child: SizedBox(
+              height: 75,
+              width: MediaQuery.of(context).size.width,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ButtonWidget(text: 'Deposit', onTap: () {}, active: true),
+                  ButtonWidget(text: 'Wallet', onTap: () {}, active: true),
+                  ButtonWidget(text: 'Withdraw', onTap: () {}, active: true),
+                ],
+              ),
+            ),
+          ),
           // SliverToBoxAdapter(
           //   child: SizedBox(
           //     width: double.infinity,
