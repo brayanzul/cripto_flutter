@@ -16,7 +16,7 @@ class TotalBalance extends StatelessWidget {
               Text(
                 'Total Balance',
                 style: TextStyle(
-                  color: Colors.white.withOpacity(.64),
+                  color: Colors.black12.withOpacity(.64),
                   fontWeight: FontWeight.w600,
                   fontSize: 15,
                 ),
@@ -27,18 +27,22 @@ class TotalBalance extends StatelessWidget {
               const Text(
                 '\$99.89',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Colors.black,
                   fontSize: 30,
                   fontWeight: FontWeight.w600,
                 ),
               ),
             ],
           ),
-          IconButton(
-            onPressed: (){}, 
-            icon: const Icon(
-              Icons.add_card_outlined,
-              color: Colors.white,
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: IconButton(
+              onPressed: (){}, 
+              icon: const Icon(
+                Icons.add_card_outlined,
+                color: Colors.black,
+                size: 35,
+              ),
             ),
           )
         ],
