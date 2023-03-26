@@ -1,11 +1,19 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cripto_flutter/model/user_model.dart';
 import 'package:cripto_flutter/screens/login_screen.dart';
+import 'package:cripto_flutter/search_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
+import '../design/coin_card.dart';
+import '../model/coins.dart';
 import '../widgets/button_widget.dart';
 import '../widgets/total_balance.dart';
+
 
 class HomeScreen extends StatefulWidget {   
   const HomeScreen({super.key});
@@ -20,6 +28,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+    fetchCoin();
+    Timer.periodic(const Duration(seconds: 10), ((timer) => fetchCoin()));
     super.initState();
     FirebaseFirestore.instance
         .collection("users")
@@ -31,6 +41,37 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  Future<List<Coin>> fetchCoin() async {
+    coinList = [];
+    final response = await http.get(Uri.parse(
+      'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=1h'));
+    if (response.statusCode == 200) {
+      List<dynamic> values = [];
+      values = json.decode(response.body);
+      if(values.length > 0) {
+        for (int i = 0; i < values.length; i++) {
+          if(values[i] != null) {
+            Map<String, dynamic> map = values[i];
+            coinList.add(Coin.fromJson(map));
+          }
+        }
+        setState(() {
+          coinList;
+          //dispose();
+        });
+      }
+      return coinList;
+    } else {
+      throw Exception("Failed to load, try again");
+    }
+  }
+
+  // @override
+  // void initState() {
+  //   fetchCoin();
+  //   Timer.periodic(const Duration(seconds: 10), ((timer) => fetchCoin()));
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +82,21 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: true,
         actions: [
           //const Icon(Icons.close_outlined),
+          ActionChip(
+            backgroundColor: Colors.red,
+            label: const Text(
+              "Buscar Cripto", 
+              style: TextStyle(color: Colors.white),
+            ),
+            onPressed: (){
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => const SearchPage())
+              );
+            },
+          ),
+          const SizedBox(
+            width: 15,
+          ),
           ActionChip(
             backgroundColor: Colors.red,
             label: const Text(
@@ -74,28 +130,28 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
-          // SliverToBoxAdapter(
-          //   child: SizedBox(
-          //     width: double.infinity,
-          //     height: MediaQuery.of(context).size.height / 1.3,
-          //     child: ListView.builder(
-          //       itemCount: coinList.length,
-          //       itemBuilder: (context, index) {
-          //         return SingleChildScrollView(
-          //           child: CoinCard(
-          //             name: coinList[index].name, 
-          //             symbol: coinList[index].symbol, 
-          //             image: coinList[index].image, 
-          //             price: coinList[index].price.toDouble(),  
-          //             change: coinList[index].change.toDouble(), 
-          //             changePercentage: coinList[index].changePercentage.toDouble(), 
-          //             rank: coinList[index].rank.toInt(),
-          //           ),
-          //         );
-          //       },
-          //     ),
-          //   ),
-          // ),
+          SliverToBoxAdapter(
+            child: SizedBox(
+              width: double.infinity,
+              height: MediaQuery.of(context).size.height / 1.3,
+              child: ListView.builder(
+                itemCount: coinList.length,
+                itemBuilder: (context, index) {
+                  return SingleChildScrollView(
+                    child: CoinCard(
+                      name: coinList[index].name, 
+                      symbol: coinList[index].symbol, 
+                      image: coinList[index].image, 
+                      price: coinList[index].price.toDouble(),  
+                      change: coinList[index].change.toDouble(), 
+                      changePercentage: coinList[index].changePercentage.toDouble(), 
+                      rank: coinList[index].rank.toInt(),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
         ],
       )),
     );
