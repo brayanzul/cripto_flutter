@@ -1,16 +1,31 @@
 import 'package:flutter/material.dart';
 
-class SearchPage extends StatefulWidget {
+class SearchPage extends StatelessWidget {
   const SearchPage({super.key});
 
   @override
-  State<SearchPage> createState() => _SearchPageState();
-}
-
-class _SearchPageState extends State<SearchPage> {
-  @override
   Widget build(BuildContext context) {
+
+    // final List<Country> countries = [
+
+    // ];
+
     return Scaffold(
+    //   appBar: AppBar(
+    //     automaticallyImplyLeading: false,
+    //     title: ListTile(
+    //       onTap: (){
+
+    //       },
+    //       title: const Text(
+    //         'search',
+    //         style: TextStyle(
+    //           color: Colors.white,
+    //         ),
+    //       ),
+    //     ),
+    //   ),
+
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -21,9 +36,9 @@ class _SearchPageState extends State<SearchPage> {
         child: Column(
           children: [
             const Text(
-              'Bitcoin',
+              'Cryto Flutter',
               style: TextStyle(
-                color: Colors.white,
+                color: Colors.black,
                 fontSize: 22.0,
                 fontWeight: FontWeight.bold,
               ),
@@ -32,13 +47,17 @@ class _SearchPageState extends State<SearchPage> {
               height: 8.0,
             ),
             TextField(
+              style: const TextStyle(color: Colors.black),
               decoration: InputDecoration(
                 filled: true,
                 fillColor: Colors.white,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
                   borderSide: BorderSide.none,
-                )
+                ),
+                hintText: "Bitcoin",
+                prefixIcon: const Icon(Icons.search),
+                prefixIconColor: Colors.black
               ),
             )
           ],
