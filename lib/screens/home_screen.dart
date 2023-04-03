@@ -41,8 +41,14 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  // @override
+  // void dispose() {
+    
+  //   super.dispose();
+  // }
+
   Future<List<Coin>> fetchCoin() async {
-    coinList = [];
+  coinList = [];
     final response = await http.get(Uri.parse(
       'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=1h'));
     if (response.statusCode == 200) {
@@ -57,7 +63,6 @@ class _HomeScreenState extends State<HomeScreen> {
         }
         setState(() {
           coinList;
-          //dispose();
         });
       }
       return coinList;
